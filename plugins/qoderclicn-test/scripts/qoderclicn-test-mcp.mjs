@@ -184,7 +184,7 @@ async function handleMessage(message) {
             tools: {}
           },
           serverInfo: {
-            name: "qoderclicn-test",
+            name: "qoder",
             version: "0.1.0"
           }
         });
