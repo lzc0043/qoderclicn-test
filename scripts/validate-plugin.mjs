@@ -89,9 +89,9 @@ function validateMcp(pluginRoot, errors) {
     errors.push(".mcp.json field mcpServers must be an object");
     return;
   }
-  const server = payload.mcpServers.qoderclicn_test;
+  const server = payload.mcpServers.qoder;
   if (!server || server.command !== "node" || !Array.isArray(server.args) || !server.args.includes("./scripts/qoderclicn-test-mcp.mjs")) {
-    errors.push(".mcp.json must define qoderclicn_test node server");
+    errors.push(".mcp.json must define qoder node server");
   }
 }
 
