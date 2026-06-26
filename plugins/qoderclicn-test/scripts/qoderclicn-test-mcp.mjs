@@ -49,6 +49,12 @@ const tools = [
         filename: { type: "string", description: "PNG filename Qoder should save under .qoderclicn-test/logs." },
         navigationInstructions: { type: "string", description: "Optional page navigation instructions before screenshot." },
         instructions: { type: "string", description: "Optional extra instructions for Qoder." },
+        model: { type: "string", description: "Optional Qoder model name, for example glm5.2. Defaults to Qoder CLI configuration or QODER_MODEL." },
+        permissionMode: {
+          type: "string",
+          enum: ["default", "accept_edits", "bypass_permissions", "dont_ask", "auto"],
+          description: "Qoder permission mode. Defaults to dont_ask so test runs do not repeatedly ask for approval."
+        },
         fullPage: { type: "boolean", description: "Capture the full scrollable page. Defaults to true." },
         timeoutMs: { type: "number" },
         keepRuns: { type: "number" },
@@ -100,6 +106,12 @@ function commonRunSchema(description) {
       workspace: { type: "string", description: "Workspace path. Defaults to the current directory." },
       instructions: { type: "string", description: `${description} instructions.` },
       testCommand: { type: "string", description: "Optional existing test command." },
+      model: { type: "string", description: "Optional Qoder model name, for example glm5.2. Defaults to Qoder CLI configuration or QODER_MODEL." },
+      permissionMode: {
+        type: "string",
+        enum: ["default", "accept_edits", "bypass_permissions", "dont_ask", "auto"],
+        description: "Qoder permission mode. Defaults to dont_ask so test runs do not repeatedly ask for approval."
+      },
       timeoutMs: { type: "number", description: "Timeout in milliseconds." },
       background: { type: "boolean", description: "Run in background." },
       keepRuns: { type: "number" },

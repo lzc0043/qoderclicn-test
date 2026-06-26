@@ -16,7 +16,8 @@
 
 - Qoder 默认不得直接修改主工作区源码。
 - Qoder 生成的测试代码只保存为 patch 文件，路径位于 `.qoderclicn-test/patches/`。
-- Qoder 测试运行默认带 `--permission-mode auto` 和 `--disallowed-tools=WRITE`，允许非交互执行只读测试命令，同时阻止写文件工具。
+- Qoder 测试运行默认带 `--permission-mode dont_ask` 和 `--disallowed-tools=WRITE`，允许非交互执行只读测试命令，同时阻止写文件工具。
+- 插件不指定模型时使用 Qoder CLI 自身默认模型；也可以通过工具参数 `model` 或环境变量 `QODER_MODEL` 显式指定，例如 `glm5.2`。
 - 插件会记录 Qoder 执行前后的源码快照。如果发现源码变化，本次运行会标记为 `policy_violation`。
 - 完整日志写入磁盘，Codex 默认只读取结构化摘要和日志路径，减少 token 消耗。
 

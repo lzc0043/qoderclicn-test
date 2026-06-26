@@ -18,6 +18,7 @@ Do not use this skill for documentation-only changes, comment-only changes, or t
 - Use `qoder_browser_test` for existing Playwright, Cypress, or equivalent browser automation tests.
 - Use `qoder_web_screenshot` for URL screenshot tasks. It still routes through Qoder, with a constrained prompt so Qoder performs the browser automation and returns the screenshot path.
 - Use `qoder_verify_changes` for final verification after Codex implements or fixes code.
+- Qoder runs default to `permissionMode: "dont_ask"` while still denying `WRITE`; pass `model` explicitly when the user asks for a specific Qoder model such as `glm5.2`.
 - Prefer foreground calls for short checks. Use `background: true` for long browser or full verification runs, then poll `qoder_status` and read `qoder_result`.
 - If Qoder reports failure, Codex may fix the code and ask Qoder to retest. Stop automatic retest loops after two failed retests and report the remaining blocker.
 - Read the structured summary first. Open full logs only when the summary is insufficient.

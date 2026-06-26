@@ -259,17 +259,39 @@ ${command}${extra}`;
 ${command}${extra}`;
 }
 
-function buildQoderArgs(workspace, prompt) {
-  return [
+function resolvePermissionMode(options = {}) {
+  const mode = String(options.permissionMode || process.env.QODER_PERMISSION_MODE || "dont_ask").trim();
+  return mode || "dont_ask";
+}
+
+function resolveQoderModel(options = {}) {
+  const model = String(options.model || process.env.QODER_MODEL || "").trim();
+  return model || null;
+}
+
+function buildQoderArgs(workspace, prompt, options = {}) {
+  const args = [
     "-p",
     "--output-format=json",
     "--permission-mode",
-    "auto",
+    resolvePermissionMode(options),
     "--disallowed-tools=WRITE",
     "-w",
     workspace,
-    prompt
   ];
+  const model = resolveQoderModel(options);
+  if (model) {
+    args.push("--model", model);
+  }
+  args.push(prompt);
+  return args;
+}
+
+function redactPromptArg(args) {
+  if (!Array.isArray(args) || args.length === 0) {
+    return [];
+  }
+  return args.map((arg, index) => (index === args.length - 1 ? "<prompt>" : arg));
 }
 
 function quoteWindowsCmdArg(value) {
@@ -471,7 +493,8 @@ export async function runQoder(kind, options = {}) {
 
   const timeoutMs = Number(options.timeoutMs) > 0 ? Number(options.timeoutMs) : DEFAULT_TIMEOUTS[kind];
   const prompt = buildBasePrompt(kind, options);
-  const args = buildQoderArgs(workspace, prompt);
+  const args = buildQoderArgs(workspace, prompt, options);
+  const displayArgs = redactPromptArg(args);
   const before = snapshotSourceFiles(workspace);
   const runResult = await spawnWithTimeout(availability.command, args, {
     cwd: workspace,
@@ -480,7 +503,7 @@ export async function runQoder(kind, options = {}) {
   });
   const changedSourceFiles = diffSourceSnapshot(before, workspace);
   const rawLog = [
-    `command: ${availability.command} ${args.map((arg) => JSON.stringify(arg)).join(" ")}`,
+    `command: ${availability.command} ${displayArgs.map((arg) => JSON.stringify(arg)).join(" ")}`,
     `exitCode: ${runResult.exitCode}`,
     `timedOut: ${runResult.timedOut}`,
     "",
@@ -516,7 +539,7 @@ export async function runQoder(kind, options = {}) {
             : "Qoder 验证未通过或输出无法结构化解析，请查看关键错误和日志。",
     command: {
       executable: availability.command,
-      args: ["-p", "--output-format=json", "--permission-mode", "auto", "--disallowed-tools=WRITE", "-w", workspace, "<prompt>"]
+      args: displayArgs
     },
     exitCode: runResult.exitCode,
     timedOut: runResult.timedOut,

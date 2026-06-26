@@ -136,6 +136,27 @@ test("qoder_unit_test records failed run and log path", async () => {
   assert.match(result.keyErrors, /unit test failed/);
 });
 
+test("qoder run defaults to dont_ask and can pass an explicit model", async () => {
+  const workspace = makeTempWorkspace();
+  const binDir = path.join(workspace, "bin");
+  installFakeQoder(binDir, "success");
+
+  const result = await runQoder("unit", {
+    workspace,
+    env: envWithFake(binDir),
+    model: "glm5.2",
+    timeoutMs: 5000
+  });
+
+  assert.equal(result.status, "passed");
+  assert.deepEqual(
+    result.command.args.slice(0, 6),
+    ["-p", "--output-format=json", "--permission-mode", "dont_ask", "--disallowed-tools=WRITE", "-w"]
+  );
+  assert.ok(result.command.args.includes("--model"));
+  assert.equal(result.command.args[result.command.args.indexOf("--model") + 1], "glm5.2");
+});
+
 test("qoder success with zero fail is not misclassified as failed", async () => {
   const workspace = makeTempWorkspace();
   const binDir = path.join(workspace, "bin");
