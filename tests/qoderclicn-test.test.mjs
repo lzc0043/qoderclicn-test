@@ -90,6 +90,33 @@ test("qoder_check detects fake qoderclicn", async () => {
   }
 });
 
+test("qoder-tool CLI fallback invokes runTool and prints JSON", () => {
+  const workspace = makeTempWorkspace();
+  const binDir = path.join(workspace, "bin");
+  installFakeQoder(binDir);
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      path.resolve("plugins/qoderclicn-test/scripts/qoder-tool.mjs"),
+      "qoder_check",
+      "--workspace",
+      workspace
+    ],
+    {
+      cwd: process.cwd(),
+      env: envWithFake(binDir),
+      encoding: "utf8",
+      windowsHide: true
+    }
+  );
+
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.available, true);
+  assert.match(payload.version, /qoderclicn fake/);
+});
+
 test("resolver detects default qoder-cn installation path when PATH misses it", () => {
   if (process.platform !== "win32") {
     return;

@@ -61,6 +61,22 @@ codex plugin marketplace add <你的远程仓库或 marketplace 地址>
 
 安装后重载插件，并在 Codex 中调用 `qoder_check` 验证 `qoderclicn` 是否可用。
 
+## 脚本降级调用
+
+如果 Codex App 已经识别到 `Qoder CN Test` 插件，但当前线程没有暴露 `qoder_check` 等 MCP 工具，可以直接使用插件脚本作为降级入口。脚本会调用同一套运行逻辑，并输出与 MCP 工具一致的结构化 JSON。
+
+```powershell
+node .\scripts\qoder-tool.mjs qoder_check --workspace "D:\path\to\workspace"
+node .\scripts\qoder-tool.mjs qoder_unit_test --workspace "D:\path\to\workspace" --testCommand "npm.cmd test" --timeoutMs 600000
+node .\scripts\qoder-tool.mjs qoder_verify_changes --workspace "D:\path\to\workspace" --model glm5.2 --timeoutMs 1200000
+```
+
+复杂参数建议使用 JSON，避免 PowerShell 引号转义干扰：
+
+```powershell
+node .\scripts\qoder-tool.mjs qoder_unit_test --args-json '{"workspace":"D:\\path\\to\\workspace","testCommand":"npm.cmd run test --workspace @catp/ui","model":"glm5.2","timeoutMs":600000}'
+```
+
 ## MCP 工具
 
 - `qoder_check`：检查 `qoderclicn.cmd` / `qoderclicn` 是否可用。

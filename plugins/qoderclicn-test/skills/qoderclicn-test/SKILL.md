@@ -23,6 +23,27 @@ Do not use this skill for documentation-only changes, comment-only changes, or t
 - If Qoder reports failure, Codex may fix the code and ask Qoder to retest. Stop automatic retest loops after two failed retests and report the remaining blocker.
 - Read the structured summary first. Open full logs only when the summary is insufficient.
 
+## Execution Order
+
+1. Prefer the MCP tools when Codex exposes them: `qoder_check`, `qoder_unit_test`, `qoder_browser_test`, `qoder_verify_changes`, `qoder_generate_test_patch`, `qoder_web_screenshot`, `qoder_status`, `qoder_result`, `qoder_cancel`, and `qoder_cleanup`.
+2. If the plugin is listed but the MCP tools are not callable, use the script fallback from this plugin root:
+
+```powershell
+node .\scripts\qoder-tool.mjs qoder_check --workspace "D:\path\to\workspace"
+node .\scripts\qoder-tool.mjs qoder_unit_test --workspace "D:\path\to\workspace" --testCommand "npm.cmd test" --timeoutMs 600000
+node .\scripts\qoder-tool.mjs qoder_verify_changes --workspace "D:\path\to\workspace" --model glm5.2 --timeoutMs 1200000
+```
+
+When the skill file is opened from `skills/qoderclicn-test/SKILL.md`, the plugin root is two directories above it. In Codex App, use an absolute path to `scripts/qoder-tool.mjs` if the current working directory is not the plugin root.
+
+For complex arguments, pass JSON to avoid shell quoting issues:
+
+```powershell
+node .\scripts\qoder-tool.mjs qoder_unit_test --args-json '{"workspace":"D:\\path\\to\\workspace","testCommand":"npm.cmd run test --workspace @catp/ui","model":"glm5.2","timeoutMs":600000}'
+```
+
+The fallback prints the same structured JSON summary as the MCP tool. Treat `status`, `summaryZh`, `keyOutput`, `keyErrors`, `logFile`, and `patchFile` exactly the same way as MCP results.
+
 ## Expected Result Handling
 
 Qoder reports are meant for Codex consumption:

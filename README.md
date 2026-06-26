@@ -21,6 +21,14 @@ npm.cmd test
 npm.cmd run validate:plugin
 ```
 
+## MCP 不可见时的降级验证
+
+如果 Codex 已安装插件但当前线程没有暴露 `qoder_check`，可以直接调用插件脚本：
+
+```powershell
+node .\plugins\qoderclicn-test\scripts\qoder-tool.mjs qoder_check --workspace "D:\path\to\workspace"
+```
+
 ## 本地安装
 
 在仓库根目录执行：
