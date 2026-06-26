@@ -101,7 +101,7 @@ function validateSkill(pluginRoot, errors) {
     errors.push("skill qoderclicn-test is missing SKILL.md");
     return;
   }
-  const content = fs.readFileSync(skillPath, "utf8");
+  const content = fs.readFileSync(skillPath, "utf8").replace(/\r\n/g, "\n");
   if (!content.startsWith("---\n")) {
     errors.push("skill SKILL.md must start with YAML frontmatter");
   }

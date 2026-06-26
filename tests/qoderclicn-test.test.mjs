@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { test } from "node:test";
 
 import {
@@ -252,6 +252,24 @@ test("cleanup removes old managed files", async () => {
 
   assert.ok(result.deletedFiles.length > 0);
   assert.ok(result.remainingBytes <= 1024);
+});
+
+test("plugin validator accepts CRLF skill frontmatter", () => {
+  const workspace = makeTempWorkspace();
+  const pluginRoot = path.join(workspace, "qoderclicn-test");
+  fs.cpSync(path.resolve("plugins/qoderclicn-test"), pluginRoot, { recursive: true });
+
+  const skillPath = path.join(pluginRoot, "skills", "qoderclicn-test", "SKILL.md");
+  const crlfContent = fs.readFileSync(skillPath, "utf8").replace(/\r?\n/g, "\r\n");
+  fs.writeFileSync(skillPath, crlfContent, "utf8");
+
+  const result = spawnSync(process.execPath, [path.resolve("scripts/validate-plugin.mjs"), pluginRoot], {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    windowsHide: true
+  });
+
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
 });
 
 function encodeMcp(message) {

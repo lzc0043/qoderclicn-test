@@ -38,16 +38,16 @@ qoderclicn.cmd --version
 
 ```powershell
 codex plugin marketplace add .
-codex plugin install qoderclicn-test@personal
 ```
 
-如果 Codex App 提示需要重载插件，请按提示重启或重载。
+然后在 Codex App 的插件页面启用 `qoderclicn-test@personal`。如果 Codex App 提示需要重载插件，请按提示重启或重载。
+
+部分 Codex CLI 版本没有 `codex plugin install` 子命令，只需要添加 marketplace 后在 App 中启用插件即可。
 
 如果你的 Codex 版本要求显式传入 marketplace 文件路径，可以改用：
 
 ```powershell
 codex plugin marketplace add .\.agents\plugins\marketplace.json
-codex plugin install qoderclicn-test@personal
 ```
 
 ## 远程仓库安装
@@ -56,7 +56,6 @@ codex plugin install qoderclicn-test@personal
 
 ```powershell
 codex plugin marketplace add <你的远程仓库或 marketplace 地址>
-codex plugin install qoderclicn-test@personal
 ```
 
 安装后重载插件，并在 Codex 中调用 `qoder_check` 验证 `qoderclicn` 是否可用。

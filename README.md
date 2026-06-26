@@ -27,12 +27,12 @@ npm.cmd run validate:plugin
 
 ```powershell
 codex plugin marketplace add .
-codex plugin install qoderclicn-test@personal
 ```
+
+然后在 Codex App 的插件页面启用 `qoderclicn-test@personal`。部分 Codex CLI 版本没有 `codex plugin install` 子命令，只需要添加 marketplace 后在 App 中启用插件即可。
 
 如果 Codex 版本要求显式 marketplace 文件路径：
 
 ```powershell
 codex plugin marketplace add .\.agents\plugins\marketplace.json
-codex plugin install qoderclicn-test@personal
 ```
