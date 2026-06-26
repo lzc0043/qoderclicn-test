@@ -1,0 +1,10 @@
+{
+  "name": "ai-test-qoderclicn-plugin-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "validate:plugin": "node scripts/validate-plugin.mjs plugins/qoderclicn-test"
+  }
+}

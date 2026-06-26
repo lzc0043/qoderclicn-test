@@ -1,0 +1,27 @@
+{
+  "name": "qoderclicn-test",
+  "version": "0.1.0",
+  "description": "Use Qoder CN CLI from Codex to generate test patches and verify changes.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Qoder CN Test",
+    "shortDescription": "Run Qoder CN CLI as a read-only test verifier.",
+    "longDescription": "Qoder CN Test lets Codex delegate test patch generation, unit tests, browser automation tests, and final verification to qoderclicn while keeping source edits under Codex control.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [
+      "MCP",
+      "Testing",
+      "Automation"
+    ],
+    "defaultPrompt": [
+      "Use Qoder CN to verify my latest changes.",
+      "Ask Qoder CN to generate a test patch.",
+      "Run Qoder CN browser automation verification."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

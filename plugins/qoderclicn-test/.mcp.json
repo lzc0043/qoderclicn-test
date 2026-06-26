@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "qoderclicn-test": {
+      "command": "node",
+      "args": [
+        "./scripts/qoderclicn-test-mcp.mjs"
+      ]
+    }
+  }
+}
